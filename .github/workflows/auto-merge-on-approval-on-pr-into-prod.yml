@@ -14,12 +14,12 @@ jobs:
         with:
           github-token: "${{ secrets.MERGE_ON_PROD_APPROVAL }}"
           script: |
-            const pullRequest = context.payload.workflow_run.pull_requests[0]
             const repository = context.repo
 
+            console.log(github.event.pull_request)
             await github.rest.pulls.merge({
               merge_method: "merge",
               owner: repository.owner,
-              pull_number: pullRequest.number,
+              pull_number: github.event.pull_request.number,
               repo: repository.repo,
             })
