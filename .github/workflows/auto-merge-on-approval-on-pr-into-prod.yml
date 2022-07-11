@@ -3,6 +3,8 @@ on:
   pull_request_review:
     types: [submitted]
 
+env:
+  GITHUB_PR_NUMBER: ${{github.event.pull_request.number}}
 jobs:
   approved:
     name: "Check approved"
@@ -12,14 +14,13 @@ jobs:
       - name: "Merge Pull Request"
         uses: "actions/github-script@v5"
         with:
-          github-token: "${{ secrets.MERGE_ON_PROD_APPROVAL }}"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
           script: |
             const repository = context.repo
 
-            console.log(github.event.pull_request)
             await github.rest.pulls.merge({
               merge_method: "merge",
               owner: repository.owner,
-              pull_number: github.event.pull_request.number,
+              pull_number: 1,
               repo: repository.repo,
             })
