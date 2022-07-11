@@ -21,6 +21,6 @@ jobs:
             await github.rest.pulls.merge({
               merge_method: "merge",
               owner: repository.owner,
-              pull_number: 1,
+              pull_number: context.payload.pull_request.number,
               repo: repository.repo,
             })
